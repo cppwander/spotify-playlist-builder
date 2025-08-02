@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+    <meta charset = "UTF-8">
+    <meta name="viewport" content = "width=device-width, initial-scale=1.0">
+    <title>Spotify Playlist Builder</title>
+</head>
+
+<body>
+    <div class="container">
+    <h1>Welcome to Playlist Builder!</h1>
+     <p>Successful login.</p>
+    
+    <form action = "/create-artists-playlist" method="post">
+        <label for="artists"> Type in what artists you would like in your playlist (separated by commas):</label>
+        <textarea id = "artists" name = "artists" rows="5" cols="40"> </textarea> <br>
+
+        <label for="playlistName">Name of playlist:</label>
+        <input type = "text" id="playlistName" name = "playlistName"></input> </br>
+
+        <label for = "numSongs"># of songs per artist</label>
+        <select id = "numSongs" name = "numSongs">
+            <option> 1 </option>
+            <option> 2 </option>
+            <option> 3 </option>
+            <option> 4 </option>
+            <option> 5 </option>
+            <option> 6 </option>
+            <option> 7 </option>
+            <option> 8 </option>
+            <option> 9 </option>
+            <option> 10 </option>
+        </select> </br>
+
+        <input type = "submit">
+        <div id="successMsg"></div>
+    </form>
+    
+</div>  <!---endiv container-->
+</body>
+
+<script>
+    const playlistForm = document.querySelector('form');
+    playlistForm.addEventListener('submit', async function(event){
+        event.preventDefault();
+        const artistsText = document.getElementById('artists').value;
+        const artists = artistsText.split(',').map(artist => artist.trim());
+        const playlistName = document.getElementById('playlistName').value;
+        const numSongs = document.getElementById('numSongs').value;
+
+        const formAnswersObject = {
+                artists: artists,
+                playlistName: playlistName,
+                numSongs: parseInt(numSongs)
+            };
+
+        const response = await fetch('/create-artists-playlist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formAnswersObject)
+        });
+
+        const parsedResponse = await response.json();
+        const successMsgElement = document.getElementById('successMsg');
+        if (response.ok) {
+            const successMsg = `Playlist created! <a href="${parsedResponse.url}" target="_blank"> View it on Spotify</a>`;
+            successMsgElement.innerHTML = successMsg;
+        } 
+        else {
+            successMsgElement.innerHTML = `Error: ${parsedResponse.message}`;
+        }
+    
+        
+    });
+</script>
+</html>

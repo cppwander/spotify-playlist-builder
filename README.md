@@ -7,7 +7,7 @@ The app allows you to enter a list of artists, a number (max 10), and a playlist
 Learned:
 - spotify authorization code flow
 - Access token refresh
-- Frameworks and general full MERN stack
+- Javascript frameworks and general full MERN stack
 
 
 Found a small bug in Spotify API which was cool!
